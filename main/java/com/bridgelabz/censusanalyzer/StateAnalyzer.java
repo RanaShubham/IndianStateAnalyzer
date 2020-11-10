@@ -5,6 +5,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.stream.StreamSupport;
 
 import com.bridgelabz.censusanalyzer.StateAnalyzerException.Exception_Error_Type;
 import com.opencsv.bean.CsvToBean;
@@ -12,11 +13,19 @@ import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateAnalyzer 
 {
+	/**
+	 * Loads IndianStateCensus.csv file.
+	 * @param csvFilePath Location of the file.
+	 * @return Number of lines in file.
+	 * @throws StateAnalyzerException When file file type is incorrect.
+	 * @throws StateAnalyzerException When POJO class and file don't have matching headers.
+	 * @throws StateAnalyzerException When file is not found at the given path.
+	 * @throws StateAnalyzerException When file doesn't have expected delimiters in the headers.
+	 */
 	public int loadIndianStateCensusCsv(String csvFilePath)
 	{
 		if(!csvFilePath.contains(".csv"))
 			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_FILE_TYPE, "Only csv files are supported");
-		int recordCounter = 0;
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath)))
 		{
 			String firstLineOfFile = Files.lines(Paths.get(csvFilePath)).findFirst().get();
@@ -27,38 +36,42 @@ public class StateAnalyzer
 			
 			String [] fileHeaderArray = firstLineOfFile.trim().split(",");
 			
-			for (int i=0; i < fileHeaderArray.length; i++)
+			for (int i=0; i<fileHeaderArray.length; i++)
 			{
 				try {
 					if(!fileHeaderArray[i].equals(IndianStateCensus.headerArray[i]))
 						//If any header of POJO class and file is not same.
 						throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				} catch (ArrayIndexOutOfBoundsException e) {
-					//If all the headers of file are same as POJO's headers but file has extra headers.
+					//If all the headers of file are more or headers of POJO are more.
 					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
-			
-			CsvToBeanBuilder<IndianStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<IndianStateCensus>(reader);
-			CsvToBean<IndianStateCensus> beanToCsv = csvToBeanBuilder.withType(IndianStateCensus.class)
-					.withIgnoreLeadingWhiteSpace(true).build();
-			Iterator<IndianStateCensus> iterator = beanToCsv.iterator();
-			while(iterator.hasNext())
-			{
-				++recordCounter;
-				iterator.next();
-			}	
+			Iterator<IndianStateCensus> iterator = this.getCsvIterator(reader, IndianStateCensus.class);
+			Iterable<IndianStateCensus> iterable = () -> iterator;
+			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
+			return recordCounter;
 		} catch (IOException e) {
 			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_PATH, "File path incorrect.");
 		}
-		return recordCounter;
 	}
 	
+	
+	/**
+	 * Loads IndianStateCode.csv file.
+	 * @param csvFilePath file location.
+	 * @return number of lines in that file.
+	 * @throws StateAnalyzerException When file file type is incorrect.
+	 * @throws StateAnalyzerException When POJO class and file don't have matching headers.
+	 * @throws StateAnalyzerException When file is not found at the given path.
+	 * @throws StateAnalyzerException When file doesn't have expected delimiters in the headers.
+	 */
 	public int loadIndianStateCodeCsv(String csvFilePath)
 	{
+		//If file type is correct.
 		if(!csvFilePath.contains(".csv"))
 			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_FILE_TYPE, "Only csv files are supported");
-		int recordCounter = 0;
+		
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath)))
 		{
 			String firstLineOfFile = Files.lines(Paths.get(csvFilePath)).findFirst().get();
@@ -76,23 +89,32 @@ public class StateAnalyzer
 						//If any header of POJO class and file is not same.
 						throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				} catch (ArrayIndexOutOfBoundsException e) {
-					//If all the headers of file are same as POJO's headers but file has extra headers.
+					//If all the headers of file are more or headers of POJO are more.
 					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
-			
-			CsvToBeanBuilder<IndianStateCensus> csvToBeanBuilder = new CsvToBeanBuilder<IndianStateCensus>(reader);
-			CsvToBean<IndianStateCensus> beanToCsv = csvToBeanBuilder.withType(IndianStateCensus.class)
-					.withIgnoreLeadingWhiteSpace(true).build();
-			Iterator<IndianStateCensus> iterator = beanToCsv.iterator();
-			while(iterator.hasNext())
-			{
-				++recordCounter;
-				iterator.next();
-			}	
+			Iterator<IndianStateCode> iterator = this.getCsvIterator(reader, IndianStateCode.class);
+			Iterable<IndianStateCode> iterable = () -> iterator;
+			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
+			return recordCounter;
 		} catch (IOException e) {
 			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_PATH, "File path incorrect.");
 		}
-		return recordCounter;
+	}
+	
+	/**
+	 * @param <E>
+	 * @param Class pojoClass
+	 * @param Reader reader
+	 * @return Iterator to iterate over csvToBean object.
+	 * @throws StateAnalyzerException
+	 */
+	private <E> Iterator<E> getCsvIterator(Reader reader, Class<E> pojoClass) throws StateAnalyzerException
+	{	
+		CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<E>(reader);
+		CsvToBean<E> csvToBean = csvToBeanBuilder.withType(pojoClass)
+				.withIgnoreLeadingWhiteSpace(true).build();
+		Iterator<E> iterator = csvToBean.iterator();
+		return iterator;
 	}
 }

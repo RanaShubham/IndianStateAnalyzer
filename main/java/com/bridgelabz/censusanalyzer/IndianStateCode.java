@@ -9,10 +9,10 @@ public class IndianStateCode {
 	@CsvBindByName(column = "SrNo")
 	public String srNo;
 	@CsvBindByName(column = "State Name")
-	public long stateName;
+	public String stateName;
 	@CsvBindByName(column = "TIN")
-	public long tin;
+	public int tin;
 	@CsvBindByName(column = "StateCode")
-	public long stateCode;
+	public String stateCode;
 
 }
