@@ -1,8 +1,8 @@
 package com.bridgelabz.censusanalyzer;
 
-public class CensusAnalyzerExcepition extends RuntimeException
+public class StateAnalyzerException extends RuntimeException
 {
-	enum Exception_Error_Type
+	public enum Exception_Error_Type
 	{
 		INCORRECT_PATH,
 		INCORRECT_FILE_TYPE,
@@ -11,7 +11,7 @@ public class CensusAnalyzerExcepition extends RuntimeException
 	};
 	
 	Exception_Error_Type type;
-	public CensusAnalyzerExcepition(Exception_Error_Type type, String message)
+	public StateAnalyzerException(Exception_Error_Type type, String message)
 	{
 		super(type+": "+message);
 		this.type = type;

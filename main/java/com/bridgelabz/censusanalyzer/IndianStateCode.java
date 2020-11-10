@@ -1,4 +1,4 @@
-package com.bridgelabz.indianstatecode;
+package com.bridgelabz.censusanalyzer;
 
 import com.opencsv.bean.CsvBindByName;
 
