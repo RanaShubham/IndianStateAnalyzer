@@ -47,7 +47,7 @@ public class StateAnalyzer
 					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
-			Iterator<IndianStateCensus> iterator = this.getCsvIterator(reader, IndianStateCensus.class);
+			Iterator<IndianStateCensus> iterator = new OpenCsvBuilder().getCsvIterator(reader, IndianStateCensus.class);
 			Iterable<IndianStateCensus> iterable = () -> iterator;
 			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
 			return recordCounter;
@@ -93,28 +93,12 @@ public class StateAnalyzer
 					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
-			Iterator<IndianStateCode> iterator = this.getCsvIterator(reader, IndianStateCode.class);
+			Iterator<IndianStateCode> iterator = new OpenCsvBuilder().getCsvIterator(reader, IndianStateCode.class);
 			Iterable<IndianStateCode> iterable = () -> iterator;
 			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
 			return recordCounter;
 		} catch (IOException e) {
 			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_PATH, "File path incorrect.");
 		}
-	}
-	
-	/**
-	 * @param <E>
-	 * @param Class pojoClass
-	 * @param Reader reader
-	 * @return Iterator to iterate over csvToBean object.
-	 * @throws StateAnalyzerException
-	 */
-	private <E> Iterator<E> getCsvIterator(Reader reader, Class<E> pojoClass) throws StateAnalyzerException
-	{	
-		CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<E>(reader);
-		CsvToBean<E> csvToBean = csvToBeanBuilder.withType(pojoClass)
-				.withIgnoreLeadingWhiteSpace(true).build();
-		Iterator<E> iterator = csvToBean.iterator();
-		return iterator;
 	}
 }
