@@ -2,6 +2,10 @@ package com.bridgelabz.censusanalyzer;
 
 public class StateAnalyzerException extends RuntimeException
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public enum Exception_Error_Type
 	{
 		INCORRECT_PATH,

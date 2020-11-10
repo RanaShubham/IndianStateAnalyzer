@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
 import com.bridgelabz.censusanalyzer.StateAnalyzerException.Exception_Error_Type;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
 
 public class StateAnalyzer 
 {
@@ -47,7 +45,8 @@ public class StateAnalyzer
 					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
-			Iterator<IndianStateCensus> iterator = new OpenCsvBuilder().getCsvIterator(reader, IndianStateCensus.class);
+			ICsvBuilder<?> builder = CSVBuilderFactory.createCsvBuilder();
+			Iterator<IndianStateCensus> iterator = builder.getCsvIterator(reader, IndianStateCensus.class);
 			Iterable<IndianStateCensus> iterable = () -> iterator;
 			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
 			return recordCounter;
@@ -93,7 +92,8 @@ public class StateAnalyzer
 					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
-			Iterator<IndianStateCode> iterator = new OpenCsvBuilder().getCsvIterator(reader, IndianStateCode.class);
+			ICsvBuilder<?> builder = CSVBuilderFactory.createCsvBuilder();
+			Iterator<IndianStateCode> iterator = builder.getCsvIterator(reader, IndianStateCode.class);
 			Iterable<IndianStateCode> iterable = () -> iterator;
 			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
 			return recordCounter;

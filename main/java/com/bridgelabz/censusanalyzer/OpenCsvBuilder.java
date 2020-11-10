@@ -6,9 +6,8 @@ import java.util.Iterator;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 
-public class OpenCsvBuilder 
+public class OpenCsvBuilder<E> implements ICsvBuilder
 {
-	
 	/**
 	 * @param <E>
 	 * @param Class pojoClass
@@ -16,7 +15,7 @@ public class OpenCsvBuilder
 	 * @return Iterator to iterate over csvToBean object.
 	 * @throws StateAnalyzerException
 	 */
-	public <E> Iterator<E> getCsvIterator(Reader reader, Class<E> pojoClass) throws StateAnalyzerException
+	public Iterator<E> getCsvIterator(Reader reader, Class pojoClass) throws StateAnalyzerException
 	{	
 		CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<E>(reader);
 		CsvToBean<E> csvToBean = csvToBeanBuilder.withType(pojoClass)
