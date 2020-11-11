@@ -1,6 +1,6 @@
 package com.bridgelabz.censusanalyzer;
 
-public class StateAnalyzerException extends RuntimeException
+public class CsvBuilderException extends RuntimeException
 {
 	/**
 	 * 
@@ -15,7 +15,7 @@ public class StateAnalyzerException extends RuntimeException
 	};
 	
 	Exception_Error_Type type;
-	public StateAnalyzerException(Exception_Error_Type type, String message)
+	public CsvBuilderException(Exception_Error_Type type, String message)
 	{
 		super(type+": "+message);
 		this.type = type;

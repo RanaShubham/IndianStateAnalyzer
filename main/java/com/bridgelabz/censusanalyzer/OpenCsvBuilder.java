@@ -15,7 +15,7 @@ public class OpenCsvBuilder<E> implements ICsvBuilder
 	 * @return Iterator to iterate over csvToBean object.
 	 * @throws StateAnalyzerException
 	 */
-	public Iterator<E> getCsvIterator(Reader reader, Class pojoClass) throws StateAnalyzerException
+	public Iterator<E> getCsvIterator(Reader reader, Class pojoClass) throws CsvBuilderException
 	{	
 		CsvToBeanBuilder<E> csvToBeanBuilder = new CsvToBeanBuilder<E>(reader);
 		CsvToBean<E> csvToBean = csvToBeanBuilder.withType(pojoClass)

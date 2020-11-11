@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
-import com.bridgelabz.censusanalyzer.StateAnalyzerException.Exception_Error_Type;
+import com.bridgelabz.censusanalyzer.CsvBuilderException.Exception_Error_Type;
 
 public class StateAnalyzer 
 {
@@ -23,14 +23,14 @@ public class StateAnalyzer
 	public int loadIndianStateCensusCsv(String csvFilePath)
 	{
 		if(!csvFilePath.contains(".csv"))
-			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_FILE_TYPE, "Only csv files are supported");
+			throw new CsvBuilderException(Exception_Error_Type.INCORRECT_FILE_TYPE, "Only csv files are supported");
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath)))
 		{
 			String firstLineOfFile = Files.lines(Paths.get(csvFilePath)).findFirst().get();
 			
 			//If file header doesn't contain expected delimiter.
 			if(!firstLineOfFile.contains(","))
-				throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_DELIMETER, "Invalid delimeter");
+				throw new CsvBuilderException(Exception_Error_Type.INCORRECT_DELIMETER, "Invalid delimeter");
 			
 			String [] fileHeaderArray = firstLineOfFile.trim().split(",");
 			
@@ -39,10 +39,10 @@ public class StateAnalyzer
 				try {
 					if(!fileHeaderArray[i].equals(IndianStateCensus.headerArray[i]))
 						//If any header of POJO class and file is not same.
-						throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
+						throw new CsvBuilderException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				} catch (ArrayIndexOutOfBoundsException e) {
 					//If all the headers of file are more or headers of POJO are more.
-					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
+					throw new CsvBuilderException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
 			ICsvBuilder<?> builder = CSVBuilderFactory.createCsvBuilder();
@@ -51,7 +51,7 @@ public class StateAnalyzer
 			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
 			return recordCounter;
 		} catch (IOException e) {
-			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_PATH, "File path incorrect.");
+			throw new CsvBuilderException(Exception_Error_Type.INCORRECT_PATH, "File path incorrect.");
 		}
 	}
 	
@@ -69,7 +69,7 @@ public class StateAnalyzer
 	{
 		//If file type is correct.
 		if(!csvFilePath.contains(".csv"))
-			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_FILE_TYPE, "Only csv files are supported");
+			throw new CsvBuilderException(Exception_Error_Type.INCORRECT_FILE_TYPE, "Only csv files are supported");
 		
 		try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath)))
 		{
@@ -77,7 +77,7 @@ public class StateAnalyzer
 			
 			//If file header doesn't contain expected delimiter.
 			if(!firstLineOfFile.contains(","))
-				throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_DELIMETER, "Invalid delimeter");
+				throw new CsvBuilderException(Exception_Error_Type.INCORRECT_DELIMETER, "Invalid delimeter");
 			
 			String [] fileHeaderArray = firstLineOfFile.trim().split(",");
 			
@@ -86,10 +86,10 @@ public class StateAnalyzer
 				try {
 					if(!fileHeaderArray[i].equals(IndianStateCode.headerArray[i]))
 						//If any header of POJO class and file is not same.
-						throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
+						throw new CsvBuilderException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				} catch (ArrayIndexOutOfBoundsException e) {
 					//If all the headers of file are more or headers of POJO are more.
-					throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
+					throw new CsvBuilderException(Exception_Error_Type.INCORRECT_HEADER, "Wrong file header.");
 				}
 			}
 			ICsvBuilder<?> builder = CSVBuilderFactory.createCsvBuilder();
@@ -98,7 +98,7 @@ public class StateAnalyzer
 			int recordCounter = (int) StreamSupport.stream(iterable.spliterator(), false).count();
 			return recordCounter;
 		} catch (IOException e) {
-			throw new StateAnalyzerException(Exception_Error_Type.INCORRECT_PATH, "File path incorrect.");
+			throw new CsvBuilderException(Exception_Error_Type.INCORRECT_PATH, "File path incorrect.");
 		}
 	}
 }

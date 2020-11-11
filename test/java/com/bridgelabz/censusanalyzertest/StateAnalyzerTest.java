@@ -3,8 +3,8 @@ package com.bridgelabz.censusanalyzertest;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.bridgelabz.censusanalyzer.CsvBuilderException;
 import com.bridgelabz.censusanalyzer.StateAnalyzer;
-import com.bridgelabz.censusanalyzer.StateAnalyzerException;
 
 public class StateAnalyzerTest 
 {
@@ -23,25 +23,25 @@ public class StateAnalyzerTest
 		Assert.assertEquals(29, count);
 	}
 	
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCensusCSVFile_ifincorrect_shouldThrowsCensusAnalyzerException()
 	{
 		censusAnalyzer.loadIndianStateCensusCsv(INCORRECT_FILE_PATH);
 	}
 	
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCensusCSVFile_butTypeIncorrect_shouldThrowCensusAnalyzerException()
 	{
 		censusAnalyzer.loadIndianStateCensusCsv(INCORRECT_FILE_TYPE);
 	}
 
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCensusCSVFile_butDelimiterIncorrect_shouldThrowCensusAnalyzerException()
 	{
 		censusAnalyzer.loadIndianStateCensusCsv(INCORRECT_DELIMETER_CSV);
 	}
 	
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCensusCSVFile_butHeaderIncorrect_shouldThrowCensusAnalyzerException()
 	{
 		censusAnalyzer.loadIndianStateCensusCsv(INCORRECT_HEADER_CSV);
@@ -55,25 +55,25 @@ public class StateAnalyzerTest
 		Assert.assertEquals(37, count);
 	}
 	
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCodeCSVFile_ifincorrect_shouldThrowsCensusAnalyzerException()
 	{
 		stateCodeAnalyzer.loadIndianStateCodeCsv(INCORRECT_FILE_PATH);
 	}
 	
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCodeCSVFile_butTypeIncorrect_shouldThrowCensusAnalyzerException()
 	{
 		stateCodeAnalyzer.loadIndianStateCodeCsv(INCORRECT_FILE_TYPE);
 	}
 
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCodeCSVFile_butDelimiterIncorrect_shouldThrowCensusAnalyzerException()
 	{
 		stateCodeAnalyzer.loadIndianStateCodeCsv(INCORRECT_DELIMETER_CSV);
 	}
 	
-	@Test(expected = StateAnalyzerException.class)
+	@Test(expected = CsvBuilderException.class)
 	public void GiventheStateCodeCSVFile_butHeaderIncorrect_shouldThrowCensusAnalyzerException()
 	{
 		stateCodeAnalyzer.loadIndianStateCodeCsv(INCORRECT_HEADER_CSV);
