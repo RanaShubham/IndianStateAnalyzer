@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.stream.StreamSupport;
 
 import com.bridgelabz.censusanalyzer.CsvBuilderException.Exception_Error_Type;
+import com.bridgelabz.censusanalyzer.CsvBuilderException;
 
 public class StateAnalyzer 
 {

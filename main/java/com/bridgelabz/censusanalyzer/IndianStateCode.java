@@ -14,5 +14,4 @@ public class IndianStateCode {
 	public int tin;
 	@CsvBindByName(column = "StateCode")
 	public String stateCode;
-
 }
